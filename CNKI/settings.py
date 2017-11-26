@@ -14,7 +14,8 @@ BOT_NAME = 'CNKI'
 SPIDER_MODULES = ['CNKI.spiders']
 NEWSPIDER_MODULE = 'CNKI.spiders'
 
-SCHEDULER = "scrapy_redis.scheduler.Scheduler"
+SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.LifoQueue'
+# SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'CNKI (+http://www.yourdomain.com)'
@@ -23,7 +24,7 @@ DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 SCHEDULER_PERSIST = True
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -31,13 +32,15 @@ ROBOTSTXT_OBEY = True
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = 5
 # The download delay setting will honor only one of:
-CONCURRENT_REQUESTS_PER_DOMAIN = 16
+CONCURRENT_REQUESTS_PER_DOMAIN = 2
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-#COOKIES_ENABLED = False
+COOKIES_ENABLED = True
+COOKIES_DEBUG = True
+
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
@@ -118,3 +121,9 @@ MYREDIS_PASSWORD = 'jiangchuan'
 MYREDIS_PORT = '6379'
 REDIS_URL = 'redis://jiangchuan:jiangchuan@127.0.0.1:6379'
 # end Redis configure setting
+
+
+LOG_ENABLED = True
+LOG_ENCODING = 'utf-8'
+LOG_FILE = 'spider.log'
+LOG_LEVEL = 'DEBUG'

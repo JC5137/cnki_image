@@ -10,16 +10,12 @@ from settings import USER_AGENTS
 
 class RandomUserAgentMiddleware(object):
     def process_request(self, request, spider):
-        headers = {
-            'content-type': "application/x-www-form-urlencoded",
-            'accept': "application/json, text/javascript, */*; q=0.01",
-            'cache-control': "no-cache",
-        }
-        request.headers = headers
         user_agent = random.choice(USER_AGENTS)
         if user_agent:
             request.headers.setdefault("User-Agent", user_agent)
-
+            request.headers.setdefault("content-type", "application/x-www-form-urlencoded")
+            request.headers.setdefault("accept", "application/json, text/javascript, */*; q=0.01")
+            request.headers.setdefault("cache-control", "no-cache")
 
 class CnkiSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,

@@ -7,7 +7,17 @@
 
 import scrapy
 from peewee import *
-db = MySQLDatabase("CNKI", host='localhost', user="root", passwd="jiangchuan", charset="utf8")
+from playhouse.pool import PooledMySQLDatabase
+db = PooledMySQLDatabase(
+    "CNKI",
+    max_connections=100,
+    stale_timeout=28800,
+    user='root',
+    host='localhost',
+    passwd='jiangchuan',
+    charset="utf8",
+)
+#db = MySQLDatabase("CNKI", host='localhost', user="root", passwd="jiangchuan", charset="utf8")
 
 class CnkiItem(scrapy.Item):
     # define the fields for your item here like:
@@ -38,19 +48,35 @@ class CnkiPageItem(scrapy.Item):
     subject = scrapy.Field()
 
 
-class CnkiPage(Model):
+class CnkiImageDetail(scrapy.Item):
+    image_id = scrapy.Field()
+    key_word = scrapy.Field()
+    source = scrapy.Field()
+    context = scrapy.Field()
+    subject = scrapy.Field()
+
+class ImageItem(scrapy.Item):
+    image_path = scrapy.Field()
+    image_id = scrapy.Field()
+
+class CnkiImage(Model):
     image_id = CharField(max_length=255, primary_key=True)
-    ArticleTitle = CharField(max_length=255, null=True)
+    ArticleTitle = TextField(null=False)
     image_height = CharField(max_length=255, null=True)
     image_url = TextField(null=False)
     leftside =  CharField(max_length=255, null=True)
-    longtitle = CharField(max_length=255, null=True)
-    patent_nofont =  CharField(max_length=255, null=True)
-    title =  CharField(max_length=255, null=False)
-    title_nofont =  CharField(max_length=255, null=True)
+    longtitle = TextField(null=False)
+    patent_nofont =  TextField(null=False)
+    title =  TextField(null=False)
+    title_nofont =  TextField(null=False)
     url = TextField(null=False)
     width = CharField(max_length=255, null=True)
-    subject = CharField(max_length=255, null=True, default=None)
+    subject = CharField(max_length=255, null=False)
+
+    image_path = TextField(null=True, default='')
+    key_word = CharField(max_length=255, null=True, default='')
+    source = TextField(null=True, default='')
+    context = TextField(null=True, default='')
 
     class Meta:
         database = db
